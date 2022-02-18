@@ -13,6 +13,11 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 
 const app = express();
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+};
+
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
@@ -189,10 +194,7 @@ app.post("/login",
     res.redirect("/secrets");
   });
 
-  let port = process.env.PORT;
-  if (port == null || port == "") {
-    port = 3000;
-  };
+
 
 app.listen(port, function() {
   console.log("Server started on port 3000");
