@@ -13,11 +13,6 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 
 const app = express();
 
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 3000;
-};
-
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
@@ -68,7 +63,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://" + port + "/auth/google/secrets"
+    callbackURL: "http://localhost:3000/auth/google/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({
@@ -82,7 +77,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://" + port + "/auth/facebook/callback"
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({ facebookId: profile.id }, function (err, user) {
@@ -178,10 +173,7 @@ app.post("/register", function(req, res) {
         res.redirect("/secrets");
       });
     }
-
-
   });
-
 });
 
 app.post("/login",
@@ -194,8 +186,6 @@ app.post("/login",
     res.redirect("/secrets");
   });
 
-
-
-app.listen(port, function() {
+app.listen(3000, function() {
   console.log("Server started on port 3000");
 })
